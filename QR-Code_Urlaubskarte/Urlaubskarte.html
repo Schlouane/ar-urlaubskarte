@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>AR Urlaubskarte – Sterne & Mond</title>
+    <title>AR Urlaubskarte – Realistischer Sternenhimmel</title>
     <meta name="viewport" content="width=device-width, user-scalable=no">
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
     <script src="https://rawgit.com/jeromeetienne/ar.js/1.7.2/aframe/build/aframe-ar.min.js"></script>
@@ -10,16 +10,15 @@
   <body style="margin: 0; overflow: hidden;">
     <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
       
-      <!-- Eigener Marker -->
       <a-marker type="pattern" url="pattern-pattern-Code.patt">
-
-        <!-- Mond -->
+        
+        <!-- Realistischer Mond mit Textur -->
         <a-sphere 
           position="0 1 0" 
-          radius="0.3" 
-          color="#bbbbbb"
-          emissive="#888888"
-          animation="property: rotation; to: 0 360 0; loop: true; dur: 10000">
+          radius="0.3"
+          src="SaftigrMond.jpg"
+          emissive="#666666"
+          animation="property: rotation; to: 0 360 0; loop: true; dur: 20000">
         </a-sphere>
 
         <!-- Sterne -->
@@ -39,8 +38,7 @@
           x: (Math.random() - 0.5) * 4,
           y: 0.5 + Math.random() * 2.5,
           z: (Math.random() - 0.5) * 4,
-          size: 0.05 + Math.random() * 0.05,
-          color: "#FFD700" // golden-yellow
+          size: 0.03 + Math.random() * 0.04
         };
         starData.push(star);
       }
@@ -48,25 +46,103 @@
       const starContainer = document.getElementById("stars");
 
       starData.forEach((star) => {
-        const el = document.createElement("a-tetrahedron");
+        const el = document.createElement("a-sphere");
         el.setAttribute("position", `${star.x} ${star.y} ${star.z}`);
         el.setAttribute("radius", star.size);
-        el.setAttribute("color", star.color);
-        el.setAttribute("emissive", "#ffffaa");
+        el.setAttribute("color", "#ffff00"); // kräftiges Gelb
+        el.setAttribute("material", "shader: standard; emissive: #ffff00; emissiveIntensity: 2.5; opacity: 0.9; transparent: true;");
+        
         el.setAttribute("animation__pulse", `
           property: scale; 
           dir: alternate; 
-          dur: 1500; 
+          dur: ${1000 + Math.random() * 2000}; 
           loop: true; 
           to: 1.3 1.3 1.3
         `);
+        
         el.setAttribute("animation__float", `
           property: position; 
           dir: alternate; 
-          dur: 2000; 
+          dur: ${2000 + Math.random() * 1500}; 
           loop: true; 
-          to: ${star.x} ${star.y + 0.3} ${star.z}
+          to: ${star.x} ${star.y + 0.15} ${star.z}
         `);
+        
+        starContainer.appendChild(el);
+      });
+    </script>
+  </body>
+</html>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>AR Urlaubskarte – Realistischer Sternenhimmel</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://rawgit.com/jeromeetienne/ar.js/1.7.2/aframe/build/aframe-ar.min.js"></script>
+  </head>
+  <body style="margin: 0; overflow: hidden;">
+    <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
+      
+      <a-marker type="pattern" url="pattern-pattern-Code.patt">
+        
+        <!-- Realistischer Mond mit Textur -->
+        <a-sphere 
+          position="0 1 0" 
+          radius="0.3"
+          src="SaftigrMond.jpg"
+          emissive="#666666"
+          animation="property: rotation; to: 0 360 0; loop: true; dur: 20000">
+        </a-sphere>
+
+        <!-- Sterne -->
+        <a-entity id="stars"></a-entity>
+
+      </a-marker>
+
+      <a-entity camera></a-entity>
+    </a-scene>
+
+    <script>
+      const starData = [];
+      const numStars = 50;
+
+      for (let i = 0; i < numStars; i++) {
+        const star = {
+          x: (Math.random() - 0.5) * 4,
+          y: 0.5 + Math.random() * 2.5,
+          z: (Math.random() - 0.5) * 4,
+          size: 0.03 + Math.random() * 0.04
+        };
+        starData.push(star);
+      }
+
+      const starContainer = document.getElementById("stars");
+
+      starData.forEach((star) => {
+        const el = document.createElement("a-sphere");
+        el.setAttribute("position", `${star.x} ${star.y} ${star.z}`);
+        el.setAttribute("radius", star.size);
+        el.setAttribute("color", "#ffff00"); // kräftiges Gelb
+        el.setAttribute("material", "shader: standard; emissive: #ffff00; emissiveIntensity: 2.5; opacity: 0.9; transparent: true;");
+        
+        el.setAttribute("animation__pulse", `
+          property: scale; 
+          dir: alternate; 
+          dur: ${1000 + Math.random() * 2000}; 
+          loop: true; 
+          to: 1.3 1.3 1.3
+        `);
+        
+        el.setAttribute("animation__float", `
+          property: position; 
+          dir: alternate; 
+          dur: ${2000 + Math.random() * 1500}; 
+          loop: true; 
+          to: ${star.x} ${star.y + 0.15} ${star.z}
+        `);
+        
         starContainer.appendChild(el);
       });
     </script>
