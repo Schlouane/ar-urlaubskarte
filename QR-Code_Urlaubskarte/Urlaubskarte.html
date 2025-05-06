@@ -14,8 +14,13 @@
       <a-marker type="pattern" url="pattern-pattern-Code.patt">
 
         <!-- Mond -->
-        <a-sphere position="0 1 0" radius="0.3" color="#ccc"
-                  animation="property: rotation; to: 0 360 0; loop: true; dur: 10000"></a-sphere>
+        <a-sphere 
+          position="0 1 0" 
+          radius="0.3" 
+          color="#bbbbbb"
+          emissive="#888888"
+          animation="property: rotation; to: 0 360 0; loop: true; dur: 10000">
+        </a-sphere>
 
         <!-- Sterne -->
         <a-entity id="stars"></a-entity>
@@ -32,10 +37,10 @@
       for (let i = 0; i < numStars; i++) {
         const star = {
           x: (Math.random() - 0.5) * 4,
-          y: Math.random() * 3,
+          y: 0.5 + Math.random() * 2.5,
           z: (Math.random() - 0.5) * 4,
           size: 0.05 + Math.random() * 0.05,
-          color: "#FFF"
+          color: "#FFD700" // golden-yellow
         };
         starData.push(star);
       }
@@ -43,12 +48,25 @@
       const starContainer = document.getElementById("stars");
 
       starData.forEach((star) => {
-        const el = document.createElement("a-sphere");
+        const el = document.createElement("a-tetrahedron");
         el.setAttribute("position", `${star.x} ${star.y} ${star.z}`);
         el.setAttribute("radius", star.size);
         el.setAttribute("color", star.color);
-        el.setAttribute("animation", `property: position; dir: alternate; dur: 2000; loop: true; 
-          to: ${star.x} ${star.y + 0.2} ${star.z}`);
+        el.setAttribute("emissive", "#ffffaa");
+        el.setAttribute("animation__pulse", `
+          property: scale; 
+          dir: alternate; 
+          dur: 1500; 
+          loop: true; 
+          to: 1.3 1.3 1.3
+        `);
+        el.setAttribute("animation__float", `
+          property: position; 
+          dir: alternate; 
+          dur: 2000; 
+          loop: true; 
+          to: ${star.x} ${star.y + 0.3} ${star.z}
+        `);
         starContainer.appendChild(el);
       });
     </script>
